@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 // Config
 dotenv.config();
 const app = express();
-const port = 3000;
 
 // Setting up middleware
 app.use(cors());
@@ -17,6 +16,6 @@ app.get('/', (req, res) => {
 })
 
 // Starting the server
-app.listen(port, () => {
-    console.log(`App listening at http://localhost:${port}`)
+app.listen(process.env.DB_PORT, () => {
+    console.log(`App listening at http://localhost:${process.env.DB_PORT}`)
 })
