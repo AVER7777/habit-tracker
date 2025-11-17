@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import usersRoutes from './routes/users.js';
 
 // Config
 dotenv.config();
@@ -10,12 +11,23 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Error handling middleware
+app.use((err, req, res, _next) => {
+    console.error(err);
+    const status = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    return res.status(status).json({ message });
+});
+
 // Routes
+app.use('/users', usersRoutes);
+
+// Test route
 app.get('/', (req, res) => {
     res.send('Backend ok!');
 })
 
 // Starting the server
-app.listen(process.env.DB_PORT, () => {
-    console.log(`App listening at http://localhost:${process.env.DB_PORT}`)
-})
+app.listen(process.env.PORT, () => {
+    console.log(`App listening at http://localhost:${process.env.PORT}`)
+});
