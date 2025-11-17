@@ -1,3 +1,4 @@
+-- Tables
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -15,9 +16,21 @@ CREATE TABLE IF NOT EXISTS habits (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS habit_entries (
+CREATE TABLE IF NOT EXISTS entries (
     id SERIAL PRIMARY KEY,
     habit_id INTEGER REFERENCES habits(id) ON DELETE CASCADE,
-    date DATE NOT NULL,
+    date DATE NOT NULL
 );
 
+-- Access to schema
+GRANT USAGE ON SCHEMA public TO app_user;
+
+-- Access to existing tables
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON ALL TABLES IN SCHEMA public
+TO app_user;
+
+-- Access to future tables
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON TABLES TO app_user;
