@@ -1,6 +1,9 @@
 import pg from 'pg';
+import dotenv from 'dotenv';
 
-const { Pool } = pg;
+dotenv.config();
+
+export const { Pool } = pg;
 
 // PostgreSQL uses a connection pool to manage multiple connections and avoid
 // creating a new connection for each query
