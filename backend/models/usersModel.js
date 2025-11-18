@@ -1,5 +1,5 @@
-import { pool } from "../db.js";
-import {handleDbError} from "../utils/handleDbError.js";
+import { pool } from '../db.js';
+import { handleDbError } from '../utils/handleDbError.js';
 
 export async function create({ name, email, password_hash }) {
     try {
@@ -7,11 +7,11 @@ export async function create({ name, email, password_hash }) {
             `INSERT INTO users (name, email, password_hash) 
              VALUES ($1, $2, $3)
              RETURNING *`,
-            [name, email, password_hash]
+            [name, email, password_hash],
         );
+
         return rows[0];
-    }
-    catch (error) {
+    } catch (error) {
         handleDbError(error);
     }
 }
@@ -20,11 +20,11 @@ export async function findById(id) {
     try {
         const { rows } = await pool.query(
             'SELECT * FROM users WHERE id = $1',
-            [id]
+            [id],
         );
+
         return rows[0] ?? null;
-    }
-    catch (error) {
+    } catch (error) {
         handleDbError(error);
     }
 }
@@ -33,11 +33,11 @@ export async function findByEmail(email) {
     try {
         const { rows } = await pool.query(
             'SELECT * FROM users WHERE email = $1',
-            [email]
+            [email],
         );
+
         return rows[0] ?? null;
-    }
-    catch (error) {
+    } catch (error) {
         handleDbError(error);
     }
 }
@@ -47,11 +47,11 @@ export async function updateEmail(id, email) {
         const { rows } = await pool.query(
             `UPDATE users SET email = $1 WHERE id = $2
             RETURNING *`,
-            [email, id]
+            [email, id],
         );
+
         return rows[0] ?? null;
-    }
-    catch (error) {
+    } catch (error) {
         handleDbError(error);
     }
 }
@@ -61,11 +61,11 @@ export async function updateName(id, name) {
         const { rows } = await pool.query(
             `UPDATE users SET name = $1 WHERE id = $2
             RETURNING *`,
-            [name, id]
+            [name, id],
         );
+
         return rows[0] ?? null;
-    }
-    catch (error) {
+    } catch (error) {
         handleDbError(error);
     }
 }
@@ -75,11 +75,11 @@ export async function updatePassword(id, password_hash) {
         const { rows } = await pool.query(
             `UPDATE users SET password_hash = $1 WHERE id = $2
             RETURNING *`,
-            [password_hash, id]
+            [password_hash, id],
         );
+
         return rows[0] ?? null;
-    }
-    catch (error) {
+    } catch (error) {
         handleDbError(error);
     }
 }
