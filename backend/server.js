@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import usersRoutes from './routes/users.js';
+import usersRoutes from './routes/usersRoutes.js';
+import authRoutes from "./routes/authRoutes.js";
 
 // Config
 dotenv.config();
@@ -20,6 +21,7 @@ app.use((err, req, res, _next) => {
 });
 
 // Routes
+app.use('/auth', authRoutes);
 app.use('/users', usersRoutes);
 
 // Test route
