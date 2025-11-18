@@ -25,12 +25,20 @@ CREATE TABLE IF NOT EXISTS entries (
 -- Access to schema
 GRANT USAGE ON SCHEMA public TO app_user;
 
--- Access to existing tables
+-- Access to existing tables and sequences
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON ALL TABLES IN SCHEMA public
 TO app_user;
 
--- Access to future tables
+GRANT USAGE, SELECT, UPDATE
+ON ALL SEQUENCES IN SCHEMA public
+TO app_user;
+
+-- Access to future tables and sequences
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON TABLES TO app_user;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT USAGE, SELECT, UPDATE
+ON SEQUENCES TO app_user;
