@@ -1,25 +1,26 @@
 import js from '@eslint/js';
-import globals from 'globals';
-
+import importPlugin from 'eslint-plugin-import';
+import jest from 'eslint-plugin-jest';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import react from 'eslint-plugin-react';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import importPlugin from 'eslint-plugin-import';
-import unusedImports from 'eslint-plugin-unused-imports';
 import security from 'eslint-plugin-security';
-import jest from 'eslint-plugin-jest';
 import testingLibrary from 'eslint-plugin-testing-library';
+import unusedImports from 'eslint-plugin-unused-imports';
+import globals from 'globals';
 
-import { defineConfig, globalIgnores } from 'eslint/config';
+export default [
 
-export default defineConfig([
-    // Ignore certain files
-    globalIgnores(['dist', 'node_modules', '.next', 'build']),
+    // Ignored files
+    {
+        ignores: ['dist', 'node_modules', '.next', 'build'],
+    },
 
-    // Global config for JS/TS/React
+    // Global JS/TS/React config
     {
         files: ['**/*.{js,jsx,ts,tsx}'],
+
         plugins: {
             react,
             'react-hooks': reactHooks,
@@ -31,6 +32,7 @@ export default defineConfig([
             jest,
             'testing-library': testingLibrary,
         },
+
         languageOptions: {
             ecmaVersion: 'latest',
             globals: { ...globals.browser, ...globals.node },
@@ -39,6 +41,14 @@ export default defineConfig([
                 sourceType: 'module',
             },
         },
+
+        settings: {
+            react: {
+                version: 'detect',       // détecte automatiquement la version de React
+                jsxRuntime: 'automatic', // nouvelle transformation JSX
+            },
+        },
+
         rules: {
             ...js.configs.recommended.rules,
             ...react.configs.recommended.rules,
@@ -53,8 +63,9 @@ export default defineConfig([
             'react/jsx-boolean-value': ['error', 'never'],
             'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
             'react/jsx-no-useless-fragment': 'error',
+            'react/react-in-jsx-scope': 'off', // plus besoin d'import React
 
-            // Core Code Quality
+            // Core code quality
             'no-unused-vars': 'off',
             'unused-imports/no-unused-imports': 'error',
             'unused-imports/no-unused-vars': [
@@ -99,11 +110,15 @@ export default defineConfig([
             'import/no-absolute-path': 'error',
             'import/no-cycle': 'error',
             'import/no-duplicates': 'error',
-            'import/extensions': ['error', 'never'],
+            'import/extensions': ['error', 'ignorePackages', { js: 'always', jsx: 'never', ts: 'never', tsx: 'never' }],
             'import/newline-after-import': ['error', { count: 1 }],
             'import/order': [
                 'warn',
-                { groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'], 'newlines-between': 'always', alphabetize: { order: 'asc', caseInsensitive: true } },
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                    'newlines-between': 'always',
+                    alphabetize: { order: 'asc', caseInsensitive: true },
+                },
             ],
 
             // Style
@@ -125,7 +140,7 @@ export default defineConfig([
         },
     },
 
-    // Next.js pages / API routes override
+    // Next.js / API overrides
     {
         files: ['pages/**/*.{js,ts,jsx,tsx}', 'api/**/*.{js,ts}'],
         rules: {
@@ -136,7 +151,7 @@ export default defineConfig([
         },
     },
 
-    // Tests override
+    // Test overrides
     {
         files: ['**/__tests__/**/*.{js,ts,jsx,tsx}', '**/*.test.{js,ts,jsx,tsx}'],
         plugins: ['jest', 'testing-library'],
@@ -148,4 +163,4 @@ export default defineConfig([
             'testing-library/no-debug': 'warn',
         },
     },
-]);
+];
