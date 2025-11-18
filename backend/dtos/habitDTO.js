@@ -1,9 +1,7 @@
 import ApiError from "../utils/ApiError.js";
 
 export function habitDTO(habit) {
-    if (!habit) {
-        throw new ApiError('Habit not found', 404);
-    }
+    if (!habit) return null;
     return {
         id: habit.id,
         name: habit.name,
