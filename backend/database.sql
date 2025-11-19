@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    refresh_token TEXT,
+    refresh_token_expiration TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS habits (
@@ -13,6 +15,8 @@ CREATE TABLE IF NOT EXISTS habits (
     name VARCHAR(255) NOT NULL,
     color VARCHAR(255) NOT NULL,
     frequency INTEGER NOT NULL,
+    current_streak INTEGER NOT NULL DEFAULT 0,
+    max_streak INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
