@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -10,9 +11,18 @@ dotenv.config();
 
 const app = express();
 
-// Setting up middleware
-app.use(cors());
+// Middleware
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+}));
+
+app.use(cookieParser());
 app.use(express.json());
+
+// Routes
+app.use('/auth', authRoutes);
+app.use('/users', usersRoutes);
 
 // Error handling middleware
 app.use((err, req, res, _next) => {
@@ -24,10 +34,6 @@ app.use((err, req, res, _next) => {
 
     return res.status(status).json({ message });
 });
-
-// Routes
-app.use('/auth', authRoutes);
-app.use('/users', usersRoutes);
 
 // Test route
 app.get('/', (req, res) => {
