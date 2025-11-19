@@ -1,6 +1,7 @@
 import { pool } from '../db.js';
 import { handleDbError } from '../utils/handleDbError.js';
 
+// Create
 export async function create({ name, email, password_hash }) {
     try {
         const { rows } = await pool.query(
@@ -16,6 +17,7 @@ export async function create({ name, email, password_hash }) {
     }
 }
 
+// Read
 export async function findById(id) {
     try {
         const { rows } = await pool.query(
@@ -42,6 +44,20 @@ export async function findByEmail(email) {
     }
 }
 
+export async function findByRefreshToken(refreshToken) {
+    try {
+        const { rows } = await pool.query(
+            'SELECT * FROM users WHERE refresh_token = $1',
+            [refreshToken],
+        );
+
+        return rows[0] ?? null;
+    } catch (error) {
+        handleDbError(error);
+    }
+}
+
+// Update
 export async function updateEmail(id, email) {
     try {
         const { rows } = await pool.query(
