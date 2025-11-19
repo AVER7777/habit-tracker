@@ -20,6 +20,7 @@ export function auth(req, res, next) {
 
         req.user = { id: decoded.id }; // user id
         next();
+
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
             return next(new ApiError('Token expired', 401));

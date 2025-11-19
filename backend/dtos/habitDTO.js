@@ -1,5 +1,8 @@
 export function habitDTO(habit) {
-    if (!habit) return null;
+    if (!habit) {
+        return null;
+    }
+
     return {
         id: habit.id,
         name: habit.name,

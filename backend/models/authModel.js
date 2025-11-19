@@ -10,6 +10,7 @@ export async function updateRefreshToken(userId, refreshToken, expirationDate) {
         );
 
         return rows[0] ?? null;
+
     } catch (error) {
         handleDbError(error);
     }

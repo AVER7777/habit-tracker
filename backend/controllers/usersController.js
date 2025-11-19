@@ -25,6 +25,7 @@ export async function createUser(req, res, next) {
         const user = await create({ name, email, password_hash });
 
         res.status(201).json(userDTO(user));
+
     } catch (error) {
         next(error);
     }
@@ -36,7 +37,8 @@ export async function getUserById(req, res, next) {
     try {
         const user = await findById(userId);
 
-        res.json(userDTO(user));
+        res.status(200).json(userDTO(user));
+
     } catch (error) {
         next(error);
     }
@@ -65,6 +67,7 @@ export async function updateUserEmail(req, res, next) {
         const updatedUser = await updateEmail(userId, email);
 
         res.status(200).json(userDTO(updatedUser));
+
     } catch (error) {
         next(error);
     }
@@ -93,6 +96,7 @@ export async function updateUserName(req, res, next) {
         const updatedUser = await updateName(userId, name);
 
         res.status(200).json(userDTO(updatedUser));
+
     } catch (error) {
         next(error);
     }
@@ -125,6 +129,7 @@ export async function updateUserPassword(req, res, next) {
         const updatedUser = await updatePassword(userId, hashedPassword);
 
         res.status(200).json(userDTO(updatedUser));
+
     } catch (error) {
         next(error);
     }

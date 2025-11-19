@@ -12,6 +12,7 @@ export async function create({ name, email, password_hash }) {
         );
 
         return rows[0];
+
     } catch (error) {
         handleDbError(error);
     }
@@ -26,6 +27,7 @@ export async function findById(id) {
         );
 
         return rows[0] ?? null;
+
     } catch (error) {
         handleDbError(error);
     }
@@ -39,6 +41,7 @@ export async function findByEmail(email) {
         );
 
         return rows[0] ?? null;
+
     } catch (error) {
         handleDbError(error);
     }
@@ -52,6 +55,7 @@ export async function findByRefreshToken(refreshToken) {
         );
 
         return rows[0] ?? null;
+
     } catch (error) {
         handleDbError(error);
     }
@@ -67,6 +71,7 @@ export async function updateEmail(id, email) {
         );
 
         return rows[0] ?? null;
+
     } catch (error) {
         handleDbError(error);
     }
@@ -81,6 +86,7 @@ export async function updateName(id, name) {
         );
 
         return rows[0] ?? null;
+
     } catch (error) {
         handleDbError(error);
     }
@@ -95,6 +101,7 @@ export async function updatePassword(id, password_hash) {
         );
 
         return rows[0] ?? null;
+
     } catch (error) {
         handleDbError(error);
     }
