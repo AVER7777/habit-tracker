@@ -1,7 +1,6 @@
 import express from 'express';
 
 import {
-    createUser,
     getUserById,
     updateUserEmail,
     updateUserName,
@@ -10,9 +9,6 @@ import {
 import { auth } from '../middlewares/auth.js';
 
 const router = express.Router();
-
-// Create
-router.post('/', createUser);
 
 // Get
 router.get('/:id', auth, getUserById);

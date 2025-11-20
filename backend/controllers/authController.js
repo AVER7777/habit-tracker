@@ -1,9 +1,37 @@
+import bcrypt from 'bcrypt';
+
 import { COOKIE_OPTIONS, REFRESH_TOKEN_MS } from '../config.js';
+import { userDTO } from '../dtos/userDTO.js';
 import { deleteRefreshToken, updateRefreshToken } from '../models/authModel.js';
-import { findByRefreshToken } from '../models/usersModel.js';
+import { create, findByEmail, findByRefreshToken } from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/tokenUtils.js';
-import { validateLogin } from '../utils/validation.js';
+import { validateLogin, validateRegister } from '../utils/validation.js';
+
+export async function register(req, res, next) {
+    try {
+        const { email, password } = req.body || {};
+
+        validateRegister({ email, password });
+
+        // Verifying email
+        const userExists = await findByEmail(email);
+
+        if (userExists) {
+            throw new ApiError('Email already in use', 409);
+        }
+
+        // Password hashing
+        const passwordHash = await bcrypt.hash(password, 10);
+
+        // Creation in DB
+        const user = await create({ email, passwordHash });
+
+        res.status(201).json(userDTO(user));
+    } catch (error) {
+        next(error);
+    }
+}
 
 export async function login(req, res, next) {
     try {
