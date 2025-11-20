@@ -10,13 +10,13 @@ import {
     updatePassword,
 } from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
-import { validateEmail, validatePassword, validateUserInput } from '../utils/validation.js';
+import { validateEmail, validatePassword, validateRegister } from '../utils/validation.js';
 
 export async function createUser(req, res, next) {
     try {
-        const { name, email, password } = req.body || {};
+        const { email, password } = req.body || {};
 
-        validateUserInput({ name, email, password });
+        validateRegister({ email, password });
 
         // Verifying email
         const userExists = await findByEmail(email);
@@ -29,7 +29,7 @@ export async function createUser(req, res, next) {
         const passwordHash = await bcrypt.hash(password, 10);
 
         // Creation in DB
-        const user = await create({ name, email, passwordHash });
+        const user = await create({ email, passwordHash });
 
         res.status(201).json(userDTO(user));
     } catch (error) {

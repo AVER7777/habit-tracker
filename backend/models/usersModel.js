@@ -2,16 +2,16 @@ import { pool } from '../db.js';
 import { handleDbError } from '../utils/handleDbError.js';
 
 // Create
-export async function create({ name, email, passwordHash }) {
+export async function create({ email, passwordHash }) {
     try {
         const { rows } = await pool.query(
-            `INSERT INTO users (name, email, password_hash) 
-             VALUES ($1, $2, $3)
+            `INSERT INTO users (email, password_hash) 
+             VALUES ($1, $2)
              RETURNING *`,
-            [name, email, passwordHash],
+            [email, passwordHash],
         );
 
-        return rows[0];
+        return rows[0] ?? null;
     } catch (error) {
         handleDbError(error);
     }

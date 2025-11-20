@@ -18,11 +18,7 @@ export function validatePassword(password) {
     return regex.test(String(password));
 }
 
-export function validateUserInput({ name, email, password }) {
-    if (!name || name.length < 3) {
-        throw new ApiError('Name must be at least 3 characters long', 422);
-    }
-
+export function validateRegister({ email, password }) {
     if (!email || !validateEmail(email)) {
         throw new ApiError('Invalid email address', 422);
     }
