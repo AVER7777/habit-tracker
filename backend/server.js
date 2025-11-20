@@ -12,10 +12,12 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-}));
+app.use(
+    cors({
+        origin: process.env.FRONTEND_URL,
+        credentials: true,
+    }),
+);
 
 app.use(cookieParser());
 app.use(express.json());
@@ -25,7 +27,7 @@ app.use('/auth', authRoutes);
 app.use('/users', usersRoutes);
 
 // Error handling middleware
-app.use((err, req, res, _next) => {
+app.use((err, req, res) => {
     console.error(err);
 
     const status = err.statusCode || 500;

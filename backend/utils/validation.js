@@ -1,3 +1,7 @@
+import bcrypt from 'bcrypt';
+
+import { findByEmail } from '../models/usersModel.js';
+
 import ApiError from './ApiError.js';
 
 export function validateEmail(email) {
@@ -26,4 +30,24 @@ export function validateUserInput({ name, email, password }) {
     if (!password || !validatePassword(password)) {
         throw new ApiError('Invalid password format', 422);
     }
+}
+
+export async function validateLogin(email, password) {
+    if (!email || !password) {
+        throw new ApiError('Missing credentials', 400);
+    }
+
+    const user = await findByEmail(email);
+
+    if (!user) {
+        throw new ApiError('Invalid credentials', 401);
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+
+    if (!validPassword) {
+        throw new ApiError('Invalid credentials', 401);
+    }
+
+    return user;
 }

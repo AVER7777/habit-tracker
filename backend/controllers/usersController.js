@@ -1,7 +1,14 @@
 import bcrypt from 'bcrypt';
 
 import { userDTO } from '../dtos/userDTO.js';
-import { create, findByEmail, findById, updateEmail, updateName, updatePassword } from '../models/usersModel.js';
+import {
+    create,
+    findByEmail,
+    findById,
+    updateEmail,
+    updateName,
+    updatePassword,
+} from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { validateEmail, validatePassword, validateUserInput } from '../utils/validation.js';
 
@@ -19,13 +26,12 @@ export async function createUser(req, res, next) {
         }
 
         // Password hashing
-        const password_hash = await bcrypt.hash(password, 10);
+        const passwordHash = await bcrypt.hash(password, 10);
 
         // Creation in DB
-        const user = await create({ name, email, password_hash });
+        const user = await create({ name, email, passwordHash });
 
         res.status(201).json(userDTO(user));
-
     } catch (error) {
         next(error);
     }
@@ -38,7 +44,6 @@ export async function getUserById(req, res, next) {
         const user = await findById(userId);
 
         res.status(200).json(userDTO(user));
-
     } catch (error) {
         next(error);
     }
@@ -67,7 +72,6 @@ export async function updateUserEmail(req, res, next) {
         const updatedUser = await updateEmail(userId, email);
 
         res.status(200).json(userDTO(updatedUser));
-
     } catch (error) {
         next(error);
     }
@@ -96,7 +100,6 @@ export async function updateUserName(req, res, next) {
         const updatedUser = await updateName(userId, name);
 
         res.status(200).json(userDTO(updatedUser));
-
     } catch (error) {
         next(error);
     }
@@ -129,7 +132,6 @@ export async function updateUserPassword(req, res, next) {
         const updatedUser = await updatePassword(userId, hashedPassword);
 
         res.status(200).json(userDTO(updatedUser));
-
     } catch (error) {
         next(error);
     }

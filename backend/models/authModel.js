@@ -10,14 +10,12 @@ export async function updateRefreshToken(userId, refreshToken, expirationDate) {
         );
 
         return rows[0] ?? null;
-
     } catch (error) {
         handleDbError(error);
     }
 }
 
 export async function deleteRefreshToken(userId) {
-
     try {
         const { rows } = await pool.query(
             `UPDATE users 
@@ -29,7 +27,6 @@ export async function deleteRefreshToken(userId) {
         );
 
         return rows[0] ?? null;
-
     } catch (error) {
         handleDbError(error);
     }

@@ -1,10 +1,10 @@
-import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
 import { deleteRefreshToken, updateRefreshToken } from '../models/authModel.js';
-import { findByEmail, findByRefreshToken } from '../models/usersModel.js';
+import { findByRefreshToken } from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/tokenUtils.js';
+import { validateLogin } from '../utils/validation.js';
 
 dotenv.config();
 
@@ -12,21 +12,7 @@ export async function login(req, res, next) {
     try {
         const { email, password } = req.body || {};
 
-        if (!email || !password) {
-            throw new ApiError('Missing credentials', 400);
-        }
-
-        const user = await findByEmail(email);
-
-        if (!user) {
-            throw new ApiError('Invalid credentials', 401);
-        }
-
-        const validPassword = await bcrypt.compare(password, user.password_hash);
-
-        if (!validPassword) {
-            throw new ApiError('Invalid credentials', 401);
-        }
+        const user = await validateLogin(email, password);
 
         // Tokens generation
         const accessToken = generateAccessToken(user);
@@ -49,7 +35,6 @@ export async function login(req, res, next) {
             accessToken,
             user: { id: user.id, name: user.name, email: user.email },
         });
-
     } catch (error) {
         next(error);
     }
@@ -95,7 +80,6 @@ export async function refresh(req, res, next) {
         });
 
         res.json({ accessToken: newAccessToken });
-
     } catch (error) {
         next(error);
     }
@@ -122,7 +106,6 @@ export async function logout(req, res, next) {
         });
 
         res.status(204).end();
-
     } catch (error) {
         next(error);
     }
