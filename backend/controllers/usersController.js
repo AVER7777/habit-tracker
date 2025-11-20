@@ -1,15 +1,25 @@
 import bcrypt from 'bcrypt';
 
 import { userDTO } from '../dtos/userDTO.js';
-import { findById, updateEmail, updateName, updatePassword } from '../models/usersModel.js';
+import {
+    deleteUserById,
+    findById,
+    updateEmail,
+    updateName,
+    updatePassword,
+} from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { validateEmail, validatePassword } from '../utils/validation.js';
 
-export async function getUserById(req, res, next) {
-    const userId = req.params.id;
-
+export async function getUser(req, res, next) {
     try {
+        const userId = req.user.id;
+
         const user = await findById(userId);
+
+        if (!user) {
+            throw new ApiError('User not found', 404);
+        }
 
         res.status(200).json(userDTO(user));
     } catch (error) {
@@ -100,6 +110,22 @@ export async function updateUserPassword(req, res, next) {
         const updatedUser = await updatePassword(userId, hashedPassword);
 
         res.status(200).json(userDTO(updatedUser));
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function deleteUser(req, res, next) {
+    try {
+        const userId = req.user.id;
+
+        const user = await deleteUserById(userId);
+
+        if (!user) {
+            throw new ApiError('User not found', 404);
+        }
+
+        res.status(204).end();
     } catch (error) {
         next(error);
     }

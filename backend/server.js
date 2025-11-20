@@ -24,7 +24,8 @@ app.use('/auth', authRoutes);
 app.use('/users', usersRoutes);
 
 // Error handling middleware
-app.use((err, req, res) => {
+// eslint-disable-next-line max-params
+app.use((err, req, res, _next) => {
     console.error(err);
 
     const status = err.statusCode || 500;

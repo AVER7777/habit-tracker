@@ -92,3 +92,18 @@ export async function updatePassword(id, passwordHash) {
         handleDbError(error);
     }
 }
+
+// Delete
+export async function deleteUserById(id) {
+    try {
+        const { rows } = await pool.query(
+            `DELETE FROM users WHERE id = $1
+            RETURNING id`,
+            [id],
+        );
+
+        return rows[0] ?? null;
+    } catch (error) {
+        handleDbError(error);
+    }
+}
