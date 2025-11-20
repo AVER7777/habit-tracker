@@ -1,7 +1,9 @@
 import js from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import jest from 'eslint-plugin-jest';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import prettierPlugin from 'eslint-plugin-prettier';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
@@ -11,8 +13,7 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 
 export default [
-
-    // Ignored files
+    // Ignored files (à laisser en premier)
     {
         ignores: ['dist', 'node_modules', '.next', 'build'],
     },
@@ -31,6 +32,7 @@ export default [
             security,
             jest,
             'testing-library': testingLibrary,
+            prettier: prettierPlugin,
         },
 
         languageOptions: {
@@ -44,14 +46,66 @@ export default [
 
         settings: {
             react: {
-                version: 'detect',       // détecte automatiquement la version de React
-                jsxRuntime: 'automatic', // nouvelle transformation JSX
+                version: 'detect',
+                jsxRuntime: 'automatic',
             },
         },
 
         rules: {
             ...js.configs.recommended.rules,
             ...react.configs.recommended.rules,
+
+            // --- 1. Intégration Prettier ---
+            'prettier/prettier': 'error', // Fait de toutes les violations de style Prettier des erreurs ESLint
+
+            // --- 2. Règles de Qualité & Stricte ---
+
+            // Nommage et Clarté
+            camelcase: ['error', { properties: 'never' }], // Forcer le camelCase (sauf pour destructuration)
+            'prefer-template': 'error', // Forcer l'utilisation des template literals
+            'prefer-arrow-callback': 'error', // Forcer l'utilisation des fonctions fléchées pour les callbacks
+
+            // Complexité (Resserré pour un code propre)
+            complexity: ['error', { max: 7 }], // Max 7
+            'max-depth': ['error', 3], // Max 3 niveaux d'imbrication
+            'max-params': ['error', 3], // Max 3 arguments par fonction
+            'max-lines-per-function': [
+                'warn',
+                { max: 50, skipBlankLines: true, skipComments: true },
+            ], // Max 50 lignes par fonction
+
+            // Variables/Imports
+            'no-unused-vars': 'off', // Désactivé au profit de unused-imports
+            'unused-imports/no-unused-imports': 'error',
+            'unused-imports/no-unused-vars': [
+                'warn',
+                {
+                    vars: 'all',
+                    varsIgnorePattern: '^[A-Z_]', // Constantes globales ou préfixe '_'
+                    args: 'after-used',
+                    argsIgnorePattern: '^_', // Arguments de fonction ignorés avec le préfixe '_'
+                },
+            ],
+
+            // Ordre des Imports
+            'import/order': [
+                'error', // Passé à 'error' pour imposer un ordre
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                    'newlines-between': 'always',
+                    alphabetize: { order: 'asc', caseInsensitive: true },
+                },
+            ],
+
+            // Général
+            'no-console': ['error', { allow: ['warn', 'error'] }],
+            'no-debugger': 'error',
+            'no-var': 'error',
+            'prefer-const': 'error',
+            eqeqeq: ['error', 'always'],
+            'no-shadow': 'error',
+            'no-eval': 'error',
+            'no-alert': 'error',
 
             // React / Hooks
             'react-hooks/rules-of-hooks': 'error',
@@ -63,99 +117,25 @@ export default [
             'react/jsx-boolean-value': ['error', 'never'],
             'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
             'react/jsx-no-useless-fragment': 'error',
-            'react/react-in-jsx-scope': 'off', // plus besoin d'import React
-
-            // Core code quality
-            'no-unused-vars': 'off',
-            'unused-imports/no-unused-imports': 'error',
-            'unused-imports/no-unused-vars': [
-                'warn',
-                { vars: 'all', varsIgnorePattern: '^[A-Z_]', args: 'after-used', argsIgnorePattern: '^_' },
-            ],
-            'no-console': ['error', { allow: ['warn', 'error'] }],
-            'no-debugger': 'error',
-            'no-var': 'error',
-            'prefer-const': 'error',
-            eqeqeq: ['error', 'always'],
-            complexity: ['warn', { max: 8 }],
-            'max-lines': ['warn', { max: 250, skipBlankLines: true, skipComments: true }],
-            'max-params': ['warn', 4],
-            'max-depth': ['warn', 4],
-            'max-lines-per-function': ['warn', { max: 75, skipBlankLines: true, skipComments: true }],
-            'no-shadow': 'error',
-            'no-eval': 'error',
-            'no-alert': 'error',
-
-            // Security
-            'security/detect-object-injection': 'warn',
-            'security/detect-unsafe-regex': 'error',
-            'security/detect-non-literal-regexp': 'warn',
-            'security/detect-non-literal-fs-filename': 'warn',
-            'security/detect-eval-with-expression': 'error',
-            'security/detect-new-buffer': 'warn',
-
-            // Accessibility
-            'jsx-a11y/anchor-is-valid': 'warn',
-            'jsx-a11y/alt-text': 'warn',
-            'jsx-a11y/no-static-element-interactions': 'warn',
-            'jsx-a11y/no-noninteractive-element-interactions': 'warn',
-            'jsx-a11y/click-events-have-key-events': 'warn',
-            'jsx-a11y/control-has-associated-label': 'warn',
-            'jsx-a11y/no-autofocus': 'warn',
-            'jsx-a11y/no-redundant-roles': 'warn',
-            'jsx-a11y/tabindex-no-positive': 'warn',
-
-            // Imports
-            'import/no-unresolved': 'error',
-            'import/no-absolute-path': 'error',
-            'import/no-cycle': 'error',
-            'import/no-duplicates': 'error',
-            'import/extensions': ['error', 'ignorePackages', { js: 'always', jsx: 'never', ts: 'never', tsx: 'never' }],
-            'import/newline-after-import': ['error', { count: 1 }],
-            'import/order': [
-                'warn',
-                {
-                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-                    'newlines-between': 'always',
-                    alphabetize: { order: 'asc', caseInsensitive: true },
-                },
-            ],
-
-            // Style
-            indent: ['error', 4, { SwitchCase: 1 }],
-            semi: ['error', 'always'],
-            quotes: ['error', 'single', { avoidEscape: true }],
-            'comma-dangle': ['error', 'always-multiline'],
-            'brace-style': ['error', '1tbs', { allowSingleLine: true }],
-            'arrow-spacing': ['error', { before: true, after: true }],
-            'space-before-function-paren': ['error', 'never'],
-            'object-curly-spacing': ['error', 'always'],
-            'array-bracket-spacing': ['error', 'never'],
-            'padding-line-between-statements': [
-                'error',
-                { blankLine: 'always', prev: 'block-like', next: 'return' },
-                { blankLine: 'always', prev: 'const', next: '*' },
-                { blankLine: 'always', prev: '*', next: 'const' },
-            ],
+            'react/react-in-jsx-scope': 'off', // Support du JSX automatique
         },
     },
 
-    // Next.js / API overrides
+    // 3. Overrides (API/Pages et Tests)
     {
-        files: ['pages/**/*.{js,ts,jsx,tsx}', 'api/**/*.{js,ts}'],
+        // Supprime les restrictions de taille et complexité pour les fichiers de routes ou d'API
+        files: [
+            'pages/**/*.{js,ts,jsx,tsx}',
+            'api/**/*.{js,ts}',
+            '**/__tests__/**/*.{js,ts,jsx,tsx}',
+            '**/*.test.{js,ts,jsx,tsx}',
+        ],
         rules: {
             'max-lines-per-function': 'off',
             'max-lines': 'off',
             complexity: 'off',
             'no-console': 'off',
-        },
-    },
-
-    // Test overrides
-    {
-        files: ['**/__tests__/**/*.{js,ts,jsx,tsx}', '**/*.test.{js,ts,jsx,tsx}'],
-        plugins: ['jest', 'testing-library'],
-        rules: {
+            // Règles spécifiques aux tests
             'no-unused-expressions': 'off',
             'jest/expect-expect': 'warn',
             'jest/no-disabled-tests': 'warn',
@@ -163,4 +143,7 @@ export default [
             'testing-library/no-debug': 'warn',
         },
     },
+
+    // deactivate all rules that are unnecessary or might conflict with Prettier
+    prettierConfig,
 ];
