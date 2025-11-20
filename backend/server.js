@@ -1,20 +1,17 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 
+import { FRONTEND_URL, PORT } from './config.js';
 import authRoutes from './routes/authRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
-
-// Config
-dotenv.config();
 
 const app = express();
 
 // Middleware
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL,
+        origin: FRONTEND_URL,
         credentials: true,
     }),
 );
@@ -43,4 +40,4 @@ app.get('/', (req, res) => {
 });
 
 // Starting the server
-app.listen(process.env.PORT);
+app.listen(PORT);

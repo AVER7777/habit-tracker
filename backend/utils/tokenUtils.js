@@ -1,12 +1,11 @@
 import crypto from 'crypto';
 
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
-dotenv.config();
+import { JWT_SECRET } from '../config.js';
 
 export function generateAccessToken(user) {
-    return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '15m' });
+    return jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '15m' });
 }
 
 export function generateRefreshToken() {

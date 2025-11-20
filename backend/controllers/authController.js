@@ -1,12 +1,9 @@
-import dotenv from 'dotenv';
-
+import { COOKIE_OPTIONS, REFRESH_TOKEN_MS } from '../config.js';
 import { deleteRefreshToken, updateRefreshToken } from '../models/authModel.js';
 import { findByRefreshToken } from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/tokenUtils.js';
 import { validateLogin } from '../utils/validation.js';
-
-dotenv.config();
 
 export async function login(req, res, next) {
     try {
@@ -19,17 +16,12 @@ export async function login(req, res, next) {
 
         const refreshToken = generateRefreshToken();
 
-        const expirationDate = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
+        const expirationDate = new Date(Date.now() + REFRESH_TOKEN_MS);
 
         // DB saving
         await updateRefreshToken(user.id, refreshToken, expirationDate.toISOString());
 
-        res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            maxAge: 90 * 24 * 60 * 60 * 1000,
-        });
+        res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
 
         res.json({
             accessToken,
@@ -67,17 +59,12 @@ export async function refresh(req, res, next) {
         // Token rotation
         const newRefreshToken = generateRefreshToken();
 
-        const newExpirationDate = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
+        const newExpirationDate = new Date(Date.now() + REFRESH_TOKEN_MS);
 
         await updateRefreshToken(user.id, newRefreshToken, newExpirationDate.toISOString());
 
         // Send cookie and JWT
-        res.cookie('refreshToken', newRefreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            maxAge: 90 * 24 * 60 * 60 * 1000,
-        });
+        res.cookie('refreshToken', newRefreshToken, COOKIE_OPTIONS);
 
         res.json({ accessToken: newAccessToken });
     } catch (error) {
@@ -99,11 +86,10 @@ export async function logout(req, res, next) {
             await deleteRefreshToken(user.id);
         }
 
-        res.clearCookie('refreshToken', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        });
+        const clearCookieOptions = { ...COOKIE_OPTIONS };
+        delete clearCookieOptions.maxAge;
+
+        res.clearCookie('refreshToken', clearCookieOptions);
 
         res.status(204).end();
     } catch (error) {

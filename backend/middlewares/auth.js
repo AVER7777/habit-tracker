@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 
+import { JWT_SECRET } from '../config.js';
 import ApiError from '../utils/ApiError.js';
 
 export function auth(req, res, next) {
@@ -16,7 +17,7 @@ export function auth(req, res, next) {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, JWT_SECRET);
 
         req.user = { id: decoded.id }; // user id
         next();
