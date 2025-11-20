@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { COOKIE_OPTIONS, REFRESH_TOKEN_MS } from '../config.js';
 import { userDTO } from '../dtos/userDTO.js';
 import { deleteRefreshToken, updateRefreshToken } from '../models/authModel.js';
-import { create, findByEmail, findByRefreshToken } from '../models/usersModel.js';
+import { findUserByRefreshToken, insertUser } from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/tokenUtils.js';
 import { validateLogin, validateRegister } from '../utils/validation.js';
@@ -15,7 +15,7 @@ export async function register(req, res, next) {
         validateRegister({ email, password });
 
         // Verifying email
-        const userExists = await findByEmail(email);
+        const userExists = await findUserByRefreshToken(email);
 
         if (userExists) {
             throw new ApiError('Email already in use', 409);
@@ -25,7 +25,7 @@ export async function register(req, res, next) {
         const passwordHash = await bcrypt.hash(password, 10);
 
         // Creation in DB
-        const user = await create({ email, passwordHash });
+        const user = await insertUser({ email, passwordHash });
 
         res.status(201).json(userDTO(user));
     } catch (error) {
@@ -68,7 +68,7 @@ export async function refresh(req, res, next) {
             throw new ApiError('No refresh token provided', 401);
         }
 
-        const user = await findByRefreshToken(refreshToken);
+        const user = await findUserByRefreshToken(refreshToken);
 
         if (!user) {
             throw new ApiError('Invalid refresh token', 401);
@@ -108,7 +108,7 @@ export async function logout(req, res, next) {
             return res.status(204).end();
         }
 
-        const user = await findByRefreshToken(refreshToken);
+        const user = await findUserByRefreshToken(refreshToken);
 
         if (user) {
             await deleteRefreshToken(user.id);

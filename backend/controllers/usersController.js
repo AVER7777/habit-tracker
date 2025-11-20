@@ -1,13 +1,7 @@
 import bcrypt from 'bcrypt';
 
 import { userDTO } from '../dtos/userDTO.js';
-import {
-    deleteUserById,
-    findById,
-    updateEmail,
-    updateName,
-    updatePassword,
-} from '../models/usersModel.js';
+import { deleteUserById, findUserById } from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { validateEmail, validatePassword } from '../utils/validation.js';
 
@@ -15,7 +9,7 @@ export async function getUser(req, res, next) {
     try {
         const userId = req.user.id;
 
-        const user = await findById(userId);
+        const user = await findUserById(userId);
 
         if (!user) {
             throw new ApiError('User not found', 404);
@@ -27,7 +21,7 @@ export async function getUser(req, res, next) {
     }
 }
 
-export async function updateUserEmail(req, res, next) {
+export async function updateEmail(req, res, next) {
     try {
         const { email } = req.body || {};
 
@@ -37,7 +31,7 @@ export async function updateUserEmail(req, res, next) {
             throw new ApiError('Invalid email address', 422);
         }
 
-        const user = await findById(userId);
+        const user = await findUserById(userId);
 
         if (!user) {
             throw new ApiError('User not found', 404);
@@ -55,7 +49,7 @@ export async function updateUserEmail(req, res, next) {
     }
 }
 
-export async function updateUserName(req, res, next) {
+export async function updateName(req, res, next) {
     try {
         const { name } = req.body || {};
 
@@ -65,7 +59,7 @@ export async function updateUserName(req, res, next) {
             throw new ApiError('Name must be at least 3 characters long', 422);
         }
 
-        const user = await findById(userId);
+        const user = await findUserById(userId);
 
         if (!user) {
             throw new ApiError('User not found', 404);
@@ -83,7 +77,7 @@ export async function updateUserName(req, res, next) {
     }
 }
 
-export async function updateUserPassword(req, res, next) {
+export async function updatePassword(req, res, next) {
     try {
         const { password } = req.body || {};
 
@@ -93,7 +87,7 @@ export async function updateUserPassword(req, res, next) {
             throw new ApiError('Invalid password format', 422);
         }
 
-        const user = await findById(userId);
+        const user = await findUserById(userId);
 
         if (!user) {
             throw new ApiError('User not found', 404);

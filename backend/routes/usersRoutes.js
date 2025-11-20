@@ -3,9 +3,9 @@ import express from 'express';
 import {
     deleteUser,
     getUser,
-    updateUserEmail,
-    updateUserName,
-    updateUserPassword,
+    updateEmail,
+    updateName,
+    updatePassword,
 } from '../controllers/usersController.js';
 import { auth } from '../middlewares/auth.js';
 
@@ -15,9 +15,9 @@ const router = express.Router();
 router.get('/me', auth, getUser);
 
 // Update
-router.patch('/email', auth, updateUserEmail);
-router.patch('/name', auth, updateUserName);
-router.patch('/password', auth, updateUserPassword);
+router.patch('/email', auth, updateEmail);
+router.patch('/name', auth, updateName);
+router.patch('/password', auth, updatePassword);
 
 // Delete
 router.delete('/me', auth, deleteUser);

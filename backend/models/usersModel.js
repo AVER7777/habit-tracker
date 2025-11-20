@@ -2,7 +2,7 @@ import { pool } from '../db.js';
 import { handleDbError } from '../utils/handleDbError.js';
 
 // Create
-export async function create({ email, passwordHash }) {
+export async function insertUser({ email, passwordHash }) {
     try {
         const { rows } = await pool.query(
             `INSERT INTO users (email, password_hash) 
@@ -18,7 +18,7 @@ export async function create({ email, passwordHash }) {
 }
 
 // Read
-export async function findById(id) {
+export async function findUserById(id) {
     try {
         const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
 
@@ -28,7 +28,7 @@ export async function findById(id) {
     }
 }
 
-export async function findByEmail(email) {
+export async function findUserByEmail(email) {
     try {
         const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
@@ -38,7 +38,7 @@ export async function findByEmail(email) {
     }
 }
 
-export async function findByRefreshToken(refreshToken) {
+export async function findUserByRefreshToken(refreshToken) {
     try {
         const { rows } = await pool.query('SELECT * FROM users WHERE refresh_token = $1', [
             refreshToken,
@@ -51,7 +51,7 @@ export async function findByRefreshToken(refreshToken) {
 }
 
 // Update
-export async function updateEmail(id, email) {
+export async function updateUserByEmail(id, email) {
     try {
         const { rows } = await pool.query(
             `UPDATE users SET email = $1 WHERE id = $2
@@ -65,7 +65,7 @@ export async function updateEmail(id, email) {
     }
 }
 
-export async function updateName(id, name) {
+export async function updateUserByName(id, name) {
     try {
         const { rows } = await pool.query(
             `UPDATE users SET name = $1 WHERE id = $2
@@ -79,7 +79,7 @@ export async function updateName(id, name) {
     }
 }
 
-export async function updatePassword(id, passwordHash) {
+export async function updateUserByPassword(id, passwordHash) {
     try {
         const { rows } = await pool.query(
             `UPDATE users SET password_hash = $1 WHERE id = $2

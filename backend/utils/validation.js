@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-import { findByEmail } from '../models/usersModel.js';
+import { findUserByEmail } from '../models/usersModel.js';
 
 import ApiError from './ApiError.js';
 
@@ -33,7 +33,7 @@ export async function validateLogin(email, password) {
         throw new ApiError('Missing credentials', 400);
     }
 
-    const user = await findByEmail(email);
+    const user = await findUserByEmail(email);
 
     if (!user) {
         throw new ApiError('Invalid credentials', 401);
