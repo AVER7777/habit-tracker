@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
-import { updateRefreshToken } from '../models/authModel.js';
+import { deleteRefreshToken, updateRefreshToken } from '../models/authModel.js';
 import { findByEmail, findByRefreshToken } from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/tokenUtils.js';
@@ -95,6 +95,33 @@ export async function refresh(req, res, next) {
         });
 
         res.json({ accessToken: newAccessToken });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function logout(req, res, next) {
+    try {
+        const refreshToken = req.cookies?.refreshToken;
+
+        if (!refreshToken) {
+            return res.status(204).end();
+        }
+
+        const user = await findByRefreshToken(refreshToken);
+
+        if (user) {
+            await deleteRefreshToken(user.id);
+        }
+
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        });
+
+        res.status(204).end();
 
     } catch (error) {
         next(error);
