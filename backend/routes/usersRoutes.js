@@ -8,6 +8,12 @@ import {
     updatePassword,
 } from '../controllers/usersController.js';
 import { auth } from '../middlewares/auth.js';
+import { validate } from '../middlewares/validate.js';
+import {
+    updateEmailSchema,
+    updateNameSchema,
+    updatePasswordSchema,
+} from '../schemas/userSchema.js';
 
 const router = express.Router();
 
@@ -15,9 +21,9 @@ const router = express.Router();
 router.get('/me', auth, getUser);
 
 // Update
-router.patch('/email', auth, updateEmail);
-router.patch('/name', auth, updateName);
-router.patch('/password', auth, updatePassword);
+router.patch('/email', auth, validate(updateEmailSchema), updateEmail);
+router.patch('/name', auth, validate(updateNameSchema), updateName);
+router.patch('/password', auth, validate(updatePasswordSchema), updatePassword);
 
 // Delete
 router.delete('/me', auth, deleteUser);
