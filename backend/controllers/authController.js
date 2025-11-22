@@ -6,7 +6,6 @@ import { deleteRefreshToken, updateRefreshToken } from '../models/authModel.js';
 import { findUserByEmail, findUserByRefreshToken, insertUser } from '../models/usersModel.js';
 import ApiError from '../utils/ApiError.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/tokenUtils.js';
-import { authenticateUser } from '../utils/validation.js';
 
 export async function register(req, res, next) {
     try {
@@ -35,7 +34,17 @@ export async function login(req, res, next) {
     try {
         const { email, password } = req.body;
 
-        const user = await authenticateUser(email, password);
+        const user = await findUserByEmail(email);
+
+        if (!user) {
+            throw new ApiError('Invalid credentials', 401);
+        }
+
+        const validPassword = await bcrypt.compare(password, user.password_hash);
+
+        if (!validPassword) {
+            throw new ApiError('Invalid credentials', 401);
+        }
 
         // Tokens generation
         const accessToken = generateAccessToken(user);
