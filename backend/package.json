@@ -1,21 +1,31 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^6.0.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.16.3"
-  }
+    "name": "habit-tracker-backend",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "The Node.js/Express server for the Habit Tracker application.",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "keywords": [
+        "express",
+        "node",
+        "postgresql"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^6.0.0",
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "express": "^5.1.0",
+        "habit-tracker": "file:..",
+        "jsonwebtoken": "^9.0.2",
+        "pg": "^8.16.3"
+    },
+    "devDependencies": {
+        "cookie-parser": "^1.4.7",
+        "nodemon": "^3.1.4"
+    }
 }

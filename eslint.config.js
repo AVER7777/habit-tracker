@@ -13,35 +13,100 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 
 export default [
-    // Ignored files (à laisser en premier)
+    // -------------------------------------------------------------------------
+    // 0. GLOBAL CONFIGURATION (Root)
+    // Applies to all files (backend, frontend, and root)
+    // -------------------------------------------------------------------------
     {
-        ignores: ['dist', 'node_modules', '.next', 'build'],
+        // Files to ignore
+        ignores: ['dist', 'node_modules', '.next', 'build', 'frontend/dist', 'backend/node_modules'],
     },
 
-    // Global JS/TS/React config
+    // 1. JAVASCRIPT DEFAULTS AND COMMON RULES FOR ALL FILES
     {
         files: ['**/*.{js,jsx,ts,tsx}'],
+
+        plugins: {
+            import: importPlugin,
+            'unused-imports': unusedImports,
+            security,
+            prettier: prettierPlugin,
+        },
+
+        languageOptions: {
+            ecmaVersion: 'latest',
+            // Both environments are included here because this block is global
+            globals: { ...globals.browser, ...globals.node },
+            parserOptions: {
+                sourceType: 'module',
+            },
+        },
+
+        rules: {
+            ...js.configs.recommended.rules,
+
+            // --- Prettier Integration ---
+            'prettier/prettier': 'error',
+
+            // --- General Quality Rules ---
+            camelcase: ['error', { properties: 'never' }],
+            'prefer-template': 'error',
+            'prefer-arrow-callback': 'error',
+            complexity: ['error', { max: 7 }],
+            'max-depth': ['error', 3],
+            'max-params': ['error', 3],
+            'no-unused-vars': 'off', // Handled by unused-imports
+            'unused-imports/no-unused-imports': 'error',
+            'unused-imports/no-unused-vars': [
+                'warn',
+                {
+                    vars: 'all',
+                    varsIgnorePattern: '^[A-Z_]',
+                    args: 'after-used',
+                    argsIgnorePattern: '^_',
+                },
+            ],
+            'no-console': ['error', { allow: ['warn', 'error'] }],
+            'no-debugger': 'error',
+            'no-var': 'error',
+            'prefer-const': 'error',
+            eqeqeq: ['error', 'always'],
+            'no-shadow': 'error',
+            'no-eval': 'error',
+            'no-alert': 'error',
+
+            // Import Order (Applied wherever imports are possible)
+            'import/order': [
+                'error',
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                    'newlines-between': 'always',
+                    alphabetize: { order: 'asc', caseInsensitive: true },
+                },
+            ],
+        },
+    },
+
+    // -------------------------------------------------------------------------
+    // 2. FRONTEND OVERRIDE (React/Vite)
+    // Applies React/JSX specific rules to files in frontend/
+    // -------------------------------------------------------------------------
+    {
+        files: ['frontend/**/*.{js,jsx,ts,tsx}'],
 
         plugins: {
             react,
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
             'jsx-a11y': jsxA11y,
-            import: importPlugin,
-            'unused-imports': unusedImports,
-            security,
             jest,
             'testing-library': testingLibrary,
-            prettier: prettierPlugin,
+            // Other plugins are inherited from the global block
         },
 
         languageOptions: {
-            ecmaVersion: 'latest',
-            globals: { ...globals.browser, ...globals.node },
-            parserOptions: {
-                ecmaFeatures: { jsx: true },
-                sourceType: 'module',
-            },
+            // Here, the browser environment is the priority
+            globals: globals.browser,
         },
 
         settings: {
@@ -52,62 +117,16 @@ export default [
         },
 
         rules: {
-            ...js.configs.recommended.rules,
+            // Activation of React rules
             ...react.configs.recommended.rules,
 
-            // --- 1. Intégration Prettier ---
-            'prettier/prettier': 'error', // Fait de toutes les violations de style Prettier des erreurs ESLint
-
-            // --- 2. Règles de Qualité & Stricte ---
-
-            // Nommage et Clarté
-            camelcase: ['error', { properties: 'never' }], // Forcer le camelCase (sauf pour destructuration)
-            'prefer-template': 'error', // Forcer l'utilisation des template literals
-            'prefer-arrow-callback': 'error', // Forcer l'utilisation des fonctions fléchées pour les callbacks
-
-            // Complexité (Resserré pour un code propre)
-            complexity: ['error', { max: 7 }], // Max 7
-            'max-depth': ['error', 3], // Max 3 niveaux d'imbrication
-            'max-params': ['error', 3], // Max 3 arguments par fonction
+            // Complexity (Adjusted for frontend if needed, otherwise inherited)
             'max-lines-per-function': [
                 'warn',
                 { max: 50, skipBlankLines: true, skipComments: true },
-            ], // Max 50 lignes par fonction
-
-            // Variables/Imports
-            'no-unused-vars': 'off', // Désactivé au profit de unused-imports
-            'unused-imports/no-unused-imports': 'error',
-            'unused-imports/no-unused-vars': [
-                'warn',
-                {
-                    vars: 'all',
-                    varsIgnorePattern: '^[A-Z_]', // Constantes globales ou préfixe '_'
-                    args: 'after-used',
-                    argsIgnorePattern: '^_', // Arguments de fonction ignorés avec le préfixe '_'
-                },
             ],
 
-            // Ordre des Imports
-            'import/order': [
-                'error', // Passé à 'error' pour imposer un ordre
-                {
-                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-                    'newlines-between': 'always',
-                    alphabetize: { order: 'asc', caseInsensitive: true },
-                },
-            ],
-
-            // Général
-            'no-console': ['error', { allow: ['warn', 'error'] }],
-            'no-debugger': 'error',
-            'no-var': 'error',
-            'prefer-const': 'error',
-            eqeqeq: ['error', 'always'],
-            'no-shadow': 'error',
-            'no-eval': 'error',
-            'no-alert': 'error',
-
-            // React / Hooks
+            // React / Hooks specific rules
             'react-hooks/rules-of-hooks': 'error',
             'react-hooks/exhaustive-deps': 'warn',
             'react/no-danger': 'error',
@@ -117,25 +136,69 @@ export default [
             'react/jsx-boolean-value': ['error', 'never'],
             'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
             'react/jsx-no-useless-fragment': 'error',
-            'react/react-in-jsx-scope': 'off', // Support du JSX automatique
+            'react/react-in-jsx-scope': 'off',
         },
     },
 
-    // 3. Overrides (API/Pages et Tests)
+    // -------------------------------------------------------------------------
+    // 3. BACKEND OVERRIDE (Node.js/Express)
+    // Applies server-specific rules to files in backend/
+    // -------------------------------------------------------------------------
     {
-        // Supprime les restrictions de taille et complexité pour les fichiers de routes ou d'API
-        files: [
-            'pages/**/*.{js,ts,jsx,tsx}',
-            'api/**/*.{js,ts}',
-            '**/__tests__/**/*.{js,ts,jsx,tsx}',
-            '**/*.test.{js,ts,jsx,tsx}',
-        ],
+        files: ['backend/**/*.{js,ts}'],
+
+        // Important: Resets React/JSX plugins
+        plugins: {
+            import: importPlugin, // The import plugin remains useful
+            'unused-imports': unusedImports,
+            security: security,
+            prettier: prettierPlugin,
+            // No React, JSX-A11y, Jest, or Testing-Library plugins here
+        },
+
+        languageOptions: {
+            // Activates Node.js environment
+            globals: globals.node,
+        },
+
         rules: {
+            // Deactivate all React/JSX rules that might have been inherited
+            // or do not make sense on the server
+            'react/react-in-jsx-scope': 'off',
+            'react/prop-types': 'off',
+            'react-hooks/rules-of-hooks': 'off',
+            'react-hooks/exhaustive-deps': 'off',
+            'jsx-a11y/alt-text': 'off',
+
+            // Complexity (Backend functions are often longer, relaxing slightly)
+            'max-lines-per-function': 'off',
+            'complexity': ['error', { max: 10 }], // Max 10 (more permissive)
+        },
+    },
+
+    // -------------------------------------------------------------------------
+    // 4. TESTS OVERRIDE (Adjusted to target both folders)
+    // -------------------------------------------------------------------------
+    {
+        // Targets test files in both subfolders (frontend and backend)
+        files: [
+            '**/{frontend,backend}/**/__tests__/**/*.{js,ts,jsx,tsx}',
+            '**/{frontend,backend}/**/*.test.{js,ts,jsx,tsx}',
+        ],
+
+        plugins: {
+            jest,
+            'testing-library': testingLibrary,
+        },
+
+        rules: {
+            // Relaxed rules for tests
             'max-lines-per-function': 'off',
             'max-lines': 'off',
             complexity: 'off',
             'no-console': 'off',
-            // Règles spécifiques aux tests
+
+            // Specific rules for testing
             'no-unused-expressions': 'off',
             'jest/expect-expect': 'warn',
             'jest/no-disabled-tests': 'warn',
@@ -144,6 +207,6 @@ export default [
         },
     },
 
-    // deactivate all rules that are unnecessary or might conflict with Prettier
+    // 5. PRETTIER CONFIGURATION (Must always be the last one)
     prettierConfig,
 ];
