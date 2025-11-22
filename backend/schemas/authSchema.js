@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { emailSchema, passwordSchema } from './baseSchemas.js';
+import { genericEmailSchema, genericPasswordSchema } from './baseSchemas.js';
 
 // Schema
 const simplePasswordSchema = z
@@ -10,14 +10,14 @@ const simplePasswordSchema = z
 // Export
 export const loginSchema = z.object({
     body: z.object({
-        email: emailSchema,
+        email: genericEmailSchema,
         password: simplePasswordSchema,
     }),
 });
 
 export const registerSchema = z.object({
     body: z.object({
-        email: emailSchema,
-        password: passwordSchema,
+        email: genericEmailSchema,
+        password: genericPasswordSchema,
     }),
 });

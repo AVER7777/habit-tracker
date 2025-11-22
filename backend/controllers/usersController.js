@@ -26,7 +26,7 @@ export async function getUser(req, res, next) {
     }
 }
 
-export async function updateEmail(req, res, next) {
+export async function updateUserEmail(req, res, next) {
     try {
         const { email } = req.body;
 
@@ -50,7 +50,7 @@ export async function updateEmail(req, res, next) {
     }
 }
 
-export async function updateName(req, res, next) {
+export async function updateUserName(req, res, next) {
     try {
         const { name } = req.body;
 
@@ -74,7 +74,7 @@ export async function updateName(req, res, next) {
     }
 }
 
-export async function updatePassword(req, res, next) {
+export async function updateUserPassword(req, res, next) {
     try {
         const { password } = req.body;
 

@@ -3,16 +3,16 @@ import express from 'express';
 import {
     deleteUser,
     getUser,
-    updateEmail,
-    updateName,
-    updatePassword,
+    updateUserEmail,
+    updateUserName,
+    updateUserPassword,
 } from '../controllers/usersController.js';
 import { auth } from '../middlewares/auth.js';
 import { validate } from '../middlewares/validate.js';
 import {
-    updateEmailSchema,
-    updateNameSchema,
-    updatePasswordSchema,
+    updateUserEmailSchema,
+    updateUserNameSchema,
+    updateUserPasswordSchema,
 } from '../schemas/userSchema.js';
 
 const router = express.Router();
@@ -21,9 +21,9 @@ const router = express.Router();
 router.get('/me', auth, getUser);
 
 // Update
-router.patch('/email', auth, validate(updateEmailSchema), updateEmail);
-router.patch('/name', auth, validate(updateNameSchema), updateName);
-router.patch('/password', auth, validate(updatePasswordSchema), updatePassword);
+router.patch('/email', auth, validate(updateUserEmailSchema), updateUserEmail);
+router.patch('/name', auth, validate(updateUserNameSchema), updateUserName);
+router.patch('/password', auth, validate(updateUserPasswordSchema), updateUserPassword);
 
 // Delete
 router.delete('/me', auth, deleteUser);
