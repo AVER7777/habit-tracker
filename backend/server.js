@@ -4,6 +4,7 @@ import express from 'express';
 
 import { FRONTEND_URL, PORT } from './config.js';
 import authRoutes from './routes/authRoutes.js';
+import habitsRoutes from './routes/habitsRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json());
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/habits', habitsRoutes);
 app.use('/users', usersRoutes);
 
 // Error handling middleware
