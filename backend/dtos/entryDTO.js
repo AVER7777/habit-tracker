@@ -1,10 +1,11 @@
-export function entryDTO(habitEntry) {
-    if (!habitEntry) {
+export function entryDTO(entry) {
+    if (!entry) {
         return null;
     }
 
     return {
-        id: habitEntry.id,
-        date: habitEntry.date,
+        id: entry.id,
+        habitId: entry.habitId,
+        date: entry.date,
     };
 }
