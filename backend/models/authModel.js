@@ -11,7 +11,7 @@ export async function updateRefreshToken(userId, refreshToken, expirationDate) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -28,6 +28,6 @@ export async function deleteRefreshToken(userId) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }

@@ -12,7 +12,7 @@ export async function insertHabit({ userId, name, color, frequency }) {
         );
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -22,7 +22,7 @@ export async function findAllUserHabits(userId) {
         const { rows } = await pool.query('SELECT * FROM habits WHERE user_id = $1', [userId]);
         return rows ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -34,7 +34,7 @@ export async function findHabitById(id, userId) {
         ]);
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -49,7 +49,7 @@ export async function updateHabitNameById(id, userId, newName) {
         );
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -63,7 +63,7 @@ export async function updateHabitColorById(id, userId, newColor) {
         );
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -77,7 +77,7 @@ export async function updateHabitFrequencyId(id, userId, newFrequency) {
         );
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -91,7 +91,7 @@ export async function updateHabitCurrentStreakById(id, userId, newCurrentStreak)
         );
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -105,7 +105,7 @@ export async function incrementHabitCurrentStreakById(id, userId) {
         );
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -119,7 +119,7 @@ export async function updateHabitMaxStreakById(id, userId, maxStreak) {
         );
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -133,6 +133,6 @@ export async function deleteHabitById(id, userId) {
         );
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }

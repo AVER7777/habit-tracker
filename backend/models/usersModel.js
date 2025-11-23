@@ -13,7 +13,7 @@ export async function insertUser({ email, passwordHash }) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -24,7 +24,7 @@ export async function findUserById(id) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -34,7 +34,7 @@ export async function findUserByEmail(email) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -46,7 +46,7 @@ export async function findUserByRefreshToken(refreshToken) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -61,7 +61,7 @@ export async function updateUserByEmail(id, email) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -75,7 +75,7 @@ export async function updateUserByName(id, name) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -89,7 +89,7 @@ export async function updateUserByPassword(id, passwordHash) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
 
@@ -104,6 +104,6 @@ export async function deleteUserById(id) {
 
         return rows[0] ?? null;
     } catch (error) {
-        handleDbError(error);
+        throw handleDbError(error);
     }
 }
