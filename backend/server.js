@@ -4,6 +4,7 @@ import express from 'express';
 
 import { FRONTEND_URL, PORT } from './config.js';
 import authRoutes from './routes/authRoutes.js';
+import entriesRoutes from './routes/entriesRoutes.js';
 import habitsRoutes from './routes/habitsRoutes.js';
 import usersRoutes from './routes/usersRoutes.js';
 
@@ -22,6 +23,7 @@ app.use(express.json());
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/entries', entriesRoutes);
 app.use('/habits', habitsRoutes);
 app.use('/users', usersRoutes);
 
