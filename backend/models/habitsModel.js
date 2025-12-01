@@ -38,6 +38,38 @@ export async function findHabitById(id, userId) {
     }
 }
 
+export async function findHabitsWithStats(userId) {
+    try {
+        const { rows } = await pool.query(
+            `SELECT h.id,
+                    h.name,
+                    h.color,
+                    h.frequency,
+                    h.current_streak,
+                    h.max_streak,
+                    h.created_at,
+
+                    MAX(e.date) as last_entry_date,
+                  
+                    COALESCE(
+                        json_agg(e.date) FILTER (WHERE e.date >= date_trunc('week', CURRENT_DATE)),
+                        '[]'
+                    ) as weekly_dates
+             FROM habits h
+             LEFT JOIN entries e ON h.id = e.habit_id
+             WHERE h.user_id = $1
+             GROUP BY h.id, h.created_at
+             ORDER BY h.created_at;
+            `,
+            [userId],
+        );
+
+        return rows ?? null;
+    } catch (error) {
+        throw handleDbError(error);
+    }
+}
+
 // Update
 export async function updateHabitNameById(id, userId, newName) {
     try {
