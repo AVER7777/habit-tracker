@@ -17,15 +17,6 @@ export async function insertHabit({ userId, name, color, frequency }) {
 }
 
 // Read
-export async function findAllUserHabits(userId) {
-    try {
-        const { rows } = await pool.query('SELECT * FROM habits WHERE user_id = $1', [userId]);
-        return rows ?? null;
-    } catch (error) {
-        throw handleDbError(error);
-    }
-}
-
 export async function findHabitById(id, userId) {
     try {
         const { rows } = await pool.query('SELECT * FROM habits WHERE id = $1 AND user_id = $2', [
@@ -120,34 +111,6 @@ export async function updateHabitCurrentStreakById(id, userId, newCurrentStreak)
              WHERE id = $2 AND user_id = $3 
              RETURNING *;`,
             [newCurrentStreak, id, userId],
-        );
-        return rows[0] ?? null;
-    } catch (error) {
-        throw handleDbError(error);
-    }
-}
-
-export async function incrementHabitCurrentStreakById(id, userId) {
-    try {
-        const { rows } = await pool.query(
-            `UPDATE habits SET current_streak = current_streak + 1 
-             WHERE id = $1 AND user_id = $2
-             RETURNING *;`,
-            [id, userId],
-        );
-        return rows[0] ?? null;
-    } catch (error) {
-        throw handleDbError(error);
-    }
-}
-
-export async function updateHabitMaxStreakById(id, userId, maxStreak) {
-    try {
-        const { rows } = await pool.query(
-            `UPDATE habits set max_streak = $1 
-             WHERE id = $2 AND user_id = $3 
-             RETURNING *;`,
-            [maxStreak, id, userId],
         );
         return rows[0] ?? null;
     } catch (error) {
