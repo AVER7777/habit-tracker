@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { genericIdSchema, genericNameSchema, genericNumberSchema } from './baseSchemas.js';
+import { genericIdSchema, genericNameSchema } from './baseSchemas.js';
 
 // Schemas
 const colorRegex = /^#[0-9A-F]{6}$/;
@@ -30,7 +30,7 @@ export const createHabitSchema = z.object({
     }),
 });
 
-export const getAllHabitsSchema = z.object({
+export const getHabitSchema = z.object({
     params: z.object({
         id: genericIdSchema,
     }),
@@ -60,29 +60,5 @@ export const updateHabitFrequencySchema = z.object({
     }),
     body: z.object({
         frequency: frequencySchema,
-    }),
-});
-
-export const updateHabitCurrentStreakSchema = z.object({
-    params: z.object({
-        id: genericIdSchema,
-    }),
-    body: z.object({
-        currentStreak: genericNumberSchema,
-    }),
-});
-
-export const incrementHabitCurrentStreakSchema = z.object({
-    params: z.object({
-        id: genericIdSchema,
-    }),
-});
-
-export const updateHabitMaxStreakSchema = z.object({
-    params: z.object({
-        id: genericIdSchema,
-    }),
-    body: z.object({
-        maxStreak: genericNumberSchema,
     }),
 });
