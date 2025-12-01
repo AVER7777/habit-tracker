@@ -26,6 +26,7 @@
     },
     "devDependencies": {
         "cookie-parser": "^1.4.7",
+        "date-fns": "^4.1.0",
         "nodemon": "^3.1.4"
     }
 }
