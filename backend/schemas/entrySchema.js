@@ -8,3 +8,9 @@ export const createEntrySchema = z.object({
         habitId: genericIdSchema,
     }),
 });
+
+export const deleteEntrySchema = z.object({
+    params: z.object({
+        id: genericIdSchema,
+    }),
+});
