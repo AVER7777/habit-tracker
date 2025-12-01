@@ -15,3 +15,18 @@ export async function insertEntry({ habitId, date }) {
         throw handleDbError(error);
     }
 }
+
+// Delete
+export async function deleteEntryById(id) {
+    try {
+        const { rows } = await pool.query(
+            `DELETE FROM entries WHERE id = $1
+             RETURNING id, habit_id`,
+            [id],
+        );
+
+        return rows[0] ?? null;
+    } catch (error) {
+        throw handleDbError(error);
+    }
+}
