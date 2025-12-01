@@ -5,7 +5,7 @@ export function entryDTO(entry) {
 
     return {
         id: entry.id,
-        habitId: entry.habitId,
+        habitId: entry.habit_id,
         date: entry.date,
     };
 }
