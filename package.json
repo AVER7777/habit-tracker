@@ -4,7 +4,7 @@
     "type": "module",
     "description": "Habit Tracker application with React/Vite frontend and Node/Express backend.",
     "scripts": {
-        "start:backend": "node backend/index.js",
+        "start:backend": "node backend/server.js",
         "start:frontend": "npm run dev --prefix frontend",
         "dev": "npm-run-all --parallel start:backend start:frontend",
         "install:all": "npm install && npm install --prefix frontend && npm install --prefix backend",
@@ -17,6 +17,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@typescript-eslint/parser": "^8.48.1",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-import": "^2.32.0",

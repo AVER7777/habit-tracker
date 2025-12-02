@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import typescriptParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import jest from 'eslint-plugin-jest';
@@ -19,7 +20,14 @@ export default [
     // -------------------------------------------------------------------------
     {
         // Files to ignore
-        ignores: ['dist', 'node_modules', '.next', 'build', 'frontend/dist', 'backend/node_modules'],
+        ignores: [
+            'dist',
+            'node_modules',
+            '.next',
+            'build',
+            'frontend/dist',
+            'backend/node_modules',
+        ],
     },
 
     // 1. JAVASCRIPT DEFAULTS AND COMMON RULES FOR ALL FILES
@@ -105,7 +113,10 @@ export default [
         },
 
         languageOptions: {
-            // Here, the browser environment is the priority
+            parser: typescriptParser,
+            parserOptions: {
+                ecmaFeatures: { jsx: true },
+            },
             globals: globals.browser,
         },
 
@@ -172,7 +183,7 @@ export default [
 
             // Complexity (Backend functions are often longer, relaxing slightly)
             'max-lines-per-function': 'off',
-            'complexity': ['error', { max: 10 }], // Max 10 (more permissive)
+            complexity: ['error', { max: 10 }], // Max 10 (more permissive)
         },
     },
 
