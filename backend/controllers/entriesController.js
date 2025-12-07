@@ -1,7 +1,6 @@
 import { entryDTO } from '../dtos/entryDTO.js';
-import { deleteEntryById, insertEntry } from '../models/entriesModel.js';
+import { deleteEntryByDate, insertEntry } from '../models/entriesModel.js';
 import { refreshHabitStreak } from '../services/habitService.js';
-import ApiError from '../utils/ApiError.js';
 
 export async function addEntry(req, res, next) {
     try {
@@ -21,16 +20,12 @@ export async function addEntry(req, res, next) {
 
 export async function deleteEntry(req, res, next) {
     try {
-        const { id } = req.params;
+        const { habitId } = req.params;
+        const { date } = req.body;
         const userId = req.user.id;
 
-        const deletedEntry = await deleteEntryById(id);
-
-        if (!deletedEntry) {
-            throw new ApiError('Entry not found', 404);
-        }
-
-        await refreshHabitStreak(deletedEntry.habit_id, userId);
+        await deleteEntryByDate(habitId, date);
+        await refreshHabitStreak(habitId, userId);
 
         return res.status(204).end();
     } catch (error) {
