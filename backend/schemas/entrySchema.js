@@ -11,6 +11,9 @@ export const createEntrySchema = z.object({
 
 export const deleteEntrySchema = z.object({
     params: z.object({
-        id: genericIdSchema,
+        habitId: genericIdSchema,
+    }),
+    body: z.object({
+        date: z.iso.date(),
     }),
 });
