@@ -17,14 +17,13 @@ export async function insertEntry({ habitId, date }) {
 }
 
 // Delete
-export async function deleteEntryById(id) {
+export async function deleteEntryByDate(habitId, date) {
     try {
         const { rows } = await pool.query(
-            `DELETE FROM entries WHERE id = $1
-             RETURNING id, habit_id`,
-            [id],
+            `DELETE FROM entries WHERE habit_id = $1 AND date = $2
+             RETURNING id;`,
+            [habitId, date],
         );
-
         return rows[0] ?? null;
     } catch (error) {
         throw handleDbError(error);
