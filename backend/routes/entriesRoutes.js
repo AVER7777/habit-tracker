@@ -11,6 +11,6 @@ const router = express.Router();
 router.post('/', auth, validate(createEntrySchema), addEntry);
 
 // Delete
-router.delete('/:id/', auth, validate(deleteEntrySchema), deleteEntry);
+router.delete('/:habitId/', auth, validate(deleteEntrySchema), deleteEntry);
 
 export default router;
