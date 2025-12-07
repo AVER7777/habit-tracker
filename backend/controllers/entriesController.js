@@ -11,9 +11,9 @@ export async function addEntry(req, res, next) {
 
         const entry = await insertEntry({ habitId, date });
 
-        const result = await refreshHabitStreak(habitId, userId);
+        const newStreakValue = await refreshHabitStreak(habitId, userId);
 
-        return res.status(201).json({ ...entryDTO(entry), newStreak: result.newStreak });
+        return res.status(201).json({ ...entryDTO(entry), newStreak: newStreakValue });
     } catch (error) {
         next(error);
     }
