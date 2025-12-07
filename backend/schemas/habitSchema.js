@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { genericIdSchema, genericNameSchema } from './baseSchemas.js';
 
 // Schemas
-const colorRegex = /^#[0-9A-F]{6}$/;
+const colorRegex = /^#[0-9a-f]{6}$/;
 
 const colorSchema = z
     .string({
