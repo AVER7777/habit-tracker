@@ -1,8 +1,8 @@
 import { habitDTO } from '../dtos/habitDTO.js';
 import {
     deleteHabitById,
-    findHabitById,
     findHabitsWithStats,
+    findHabitWithStats,
     insertHabit,
     updateHabitColorById,
     updateHabitCurrentStreakById,
@@ -63,15 +63,9 @@ export async function getHabit(req, res, next) {
 
         const userId = req.user.id;
 
-        const user = await findUserById(userId);
+        const habit = await findHabitWithStats(id, userId);
 
-        if (!user) {
-            throw new ApiError('User not found', 404);
-        }
-
-        const habit = await findHabitById(id, userId);
-
-        if (!habit || habit.user_id !== userId) {
+        if (!habit) {
             throw new ApiError('Habit not found', 404);
         }
 
