@@ -12,9 +12,10 @@ export default defineConfig({
                 name: 'Habit Tracker',
                 short_name: 'Habits',
                 description: 'Keep track of your habits',
-                theme_color: '#ffffff',
-                background_color: '#ffffff',
+                theme_color: '#000000',
+                background_color: '#000000',
                 display: 'standalone',
+                orientation: 'portrait',
                 icons: [
                     {
                         src: 'pwa-192x192.png',
