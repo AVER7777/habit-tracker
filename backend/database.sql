@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS habits (
 CREATE TABLE IF NOT EXISTS entries (
     id SERIAL PRIMARY KEY,
     habit_id INTEGER REFERENCES habits(id) ON DELETE CASCADE,
-    date DATE NOT NULL
+    date DATE NOT NULL,
     UNIQUE(habit_id, date)
 );
 
