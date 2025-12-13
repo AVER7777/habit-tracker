@@ -1,4 +1,23 @@
 :root {
     color: white;
+}
+
+html, body {
     background-color: black;
+    overscroll-behavior-y: none;
+
+    /*full screen*/
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+
+    /*cancel text selection*/
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#root, #app {
+    height: 100%;
+    width: 100%;
 }
