@@ -1,13 +1,15 @@
 import './App.css';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import LoginPage from './pages/auth/LoginPage.jsx';
 import RegisterPage from './pages/auth/RegisterPage.jsx';
-import TodayPage from './pages/main/TodayPage.jsx';
 import CreateHabitPage from './pages/habits/CreateHabitPage.jsx';
 import HabitSettingsPage from './pages/habits/HabitSettingsPage.jsx';
-import axios from 'axios';
+import TodayPage from './pages/main/TodayPage.jsx';
+
+const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +25,7 @@ function App() {
             } else {
                 try {
                     const response = await axios.post(
-                        'http://localhost:3000/auth/refresh',
+                        `${baseUrl}/auth/refresh`,
                         {},
                         { withCredentials: true },
                     );
