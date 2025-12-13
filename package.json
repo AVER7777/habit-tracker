@@ -8,6 +8,7 @@
         "start:frontend": "npm run dev --prefix frontend",
         "dev": "npm-run-all --parallel start:backend start:frontend",
         "install:all": "npm install && npm install --prefix frontend && npm install --prefix backend",
+        "build": "npm install --prefix frontend && npm run build --prefix frontend",
         "lint": "eslint ."
     },
     "keywords": [
