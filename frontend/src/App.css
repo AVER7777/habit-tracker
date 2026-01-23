@@ -1,9 +1,4 @@
-:root {
-    color: white;
-}
-
 html, body {
-    background-color: black;
     overscroll-behavior-y: none;
 
     /*full screen*/
