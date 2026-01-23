@@ -12,19 +12,18 @@ function RegisterPage() {
         e.preventDefault();
         try {
             await registerUser(email, password);
-            alert('Registration successful');
             navigate('/login');
         } catch (error) {
-            alert('Registration failed');
             console.error(error);
         }
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h2>Registration</h2>
+        <div className="min-h-screen flex flex-col items-center">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full p-8">
+                <div className="pt-[15vh] font-apple font-bold text-4xl">Create Account</div>
                 <input
+                    className="border-b-2 border-ios-quaternary placeholder:text-ios-secondary pb-4 focus:outline-none"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -32,17 +31,22 @@ function RegisterPage() {
                     required
                 />
                 <input
+                    className="border-b-2 border-ios-quaternary placeholder:text-ios-secondary pb-4 focus:outline-none"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                     required
                 />
-                <button type="submit">Register</button>
+                <button className="bg-blue-500 text-white rounded-full px-10 py-4" type="submit">
+                    Sign in
+                </button>
             </form>
             <p>
-                Already have an account?
-                <Link to="/login">Login</Link>
+                Already have an account?{' '}
+                <Link to="/login" className="text-blue-500">
+                    Login
+                </Link>
             </p>
         </div>
     );
