@@ -21,22 +21,26 @@ function LoginPage({ setAuth }) {
         <div className="min-h-screen flex flex-col items-center">
             <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full p-8">
                 <div className="pt-[15vh] font-apple font-bold text-4xl">Welcome Back</div>
-                <input
-                    className="border-b-2 border-ios-quaternary placeholder:text-ios-secondary pb-4 focus:outline-none"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                    required
-                />
-                <input
-                    className="border-b-2 border-ios-quaternary placeholder:text-ios-secondary pb-4 focus:outline-none"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    required
-                />
+                <div className="border-b-2 border-ios-quaternary">
+                    <input
+                        className="w-full rounded-md placeholder:text-ios-secondary p-2 pb-3 focus:outline-none"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                        required
+                    />
+                </div>
+                <div className="border-b-2 border-ios-quaternary">
+                    <input
+                        className="w-full rounded-md placeholder:text-ios-secondary p-2 pb-3 focus:outline-none"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        required
+                    />
+                </div>
                 <button className="bg-blue-500 text-white rounded-full px-10 py-4" type="submit">
                     Log In
                 </button>
