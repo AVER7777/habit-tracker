@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        /* light mode */
+        --ios-bg: #ffffff;
+        --ios-label: #000000;
+        --ios-secondary: #8a8a8e;
+        --ios-tertiary: #c4c4c6;
+        --ios-quaternary: #dcdcdd;
+    }
+
+    .dark {
+        /* dark mode */
+        --ios-bg: #000000;
+        --ios-label: #ffffff;
+        --ios-secondary: #8d8d93;
+        --ios-tertiary: #47474a;
+        --ios-quaternary: #2a2a2c;
+    }
+
+    body {
+        @apply bg-ios-bg text-ios-label;
+    }
+
+    input {
+        @apply bg-ios-bg text-ios-label;
+    }
+}
