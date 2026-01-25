@@ -3,15 +3,9 @@ import { z } from 'zod';
 import { genericIdSchema, genericNameSchema } from './baseSchemas.js';
 
 // Schemas
-const colorRegex = /^#[0-9a-f]{6}$/;
-
-const colorSchema = z
-    .string({
-        required_error: 'Color is required',
-    })
-    .regex(colorRegex, {
-        message: 'Invalid color format. Please use a hexadecimal color code (e.g., #FF0000).',
-    });
+const colorSchema = z.string({
+    required_error: 'Color is required',
+});
 
 const frequencySchema = z
     .number({
