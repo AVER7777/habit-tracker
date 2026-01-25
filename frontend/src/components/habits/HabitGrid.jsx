@@ -9,7 +9,7 @@ function HabitGrid({ habits }) {
         );
     }
     return (
-        <div className="grid grid-cols-2 gap-4 pb32">
+        <div className="grid grid-cols-2 gap-4 p-3">
             {habits.map((habit) => (
                 <HabitCard key={habit.id} habit={habit} />
             ))}
