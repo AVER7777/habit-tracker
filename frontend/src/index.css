@@ -10,8 +10,67 @@
         --ios-secondary: #8a8a8e;
         --ios-tertiary: #c4c4c6;
         --ios-quaternary: #dcdcdd;
-    }
 
+        /* red */
+        --ios-red: #ff4245;
+        --ios-red-dark: #e9152d;
+        --ios-red-light: #ff6165;
+
+        /* orange */
+        --ios-orange: #ff9230;
+        --ios-orange-dark: #c55300;
+        --ios-orange-light: #ffa056;
+
+        /* yellow */
+        --ios-yellow: #ffd600;
+        --ios-yellow-dark: #a16a00;
+        --ios-yellow-light: #fedf43;
+
+        /* green */
+        --ios-green: #30d158;
+        --ios-green-dark: #008932;
+        --ios-green-light: #4ad968;
+
+        /* mint */
+        --ios-mint: #00dac3;
+        --ios-mint-dark: #008575;
+        --ios-mint-light: #54dfcb;
+
+        /* teal */
+        --ios-teal: #00d2e0;
+        --ios-teal-dark: #008198;
+        --ios-teal-light: #3bddec;
+
+        /* cyan */
+        --ios-cyan: #3cd3fe;
+        --ios-cyan-dark: #007eae;
+        --ios-cyan-light: #6dd9ff;
+
+        /* blue */
+        --ios-blue: #0091ff;
+        --ios-blue-dark: #1e6ef4;
+        --ios-blue-light: #5cb8ff;
+
+        /* indigo */
+        --ios-indigo: #6d7cff;
+        --ios-indigo-dark: #564ade;
+        --ios-indigo-light: #a7aaff;
+
+        /* purple */
+        --ios-purple: #db34f2;
+        --ios-purple-dark: #b02fc2;
+        --ios-purple-light: #ea8dff;
+
+        /* pink */
+        --ios-pink: #ff375f;
+        --ios-pink-dark: #e7124d;
+        --ios-pink-light: #ff8ac4;
+
+        /* brown */
+        --ios-brown: #b78a66;
+        --ios-brown-dark: #956d51;
+        --ios-brown-light: #dba679;
+    }
     .dark {
         /* dark mode */
         --ios-bg: #000000;
