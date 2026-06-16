@@ -1,16 +1,118 @@
-# React + Vite
+# 📆 Habit Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Status](https://img.shields.io/badge/status-WIP-orange)
 
-Currently, two official plugins are available:
+> **⚠️ Work In Progress (WIP):** This project is currently under active development. Features are being added, and things might change or break frequently.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A full-stack habit tracking web app built with a Node.js / Express backend and a React / Vite frontend, organized as a monorepo.
 
-## React Compiler
+<!-- Replaces this path with your actual image file or GitHub link -->
+<p align="center">
+  <img src="https://cdn.discordapp.com/attachments/630507865173393408/1516440621038964836/image.png?ex=6a32a6e2&is=6a315562&hm=124c481ab24ebcdfb20f35e03ea4c6de636f0dfe7931119b779d673a9d859247&" alt="Habit Tracker Template" width="700">
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 Tech Stack
 
-## Expanding the ESLint configuration
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React, Vite, CSS |
+| **Backend** | Node.js, Express |
+| **Utilities** | date-fns |
+| **Code quality** | ESLint, Prettier |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📁 Project Structure
+
+```text
+habit-tracker/
+├── backend/          # Node.js / Express server
+│   ├── server.js     # Backend entry point
+│   └── ...
+├── frontend/         # React / Vite app
+│   ├── src/
+│   └── ...
+├── .gitignore
+├── .prettierrc
+├── eslint.config.js
+└── package.json      # Root scripts (monorepo)
+
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* **Node.js** v18 or higher
+* **npm** v9 or higher
+
+### Installation
+
+Clone the repository and install all dependencies in one command:
+
+```bash
+git clone [https://github.com/AVER7777/habit-tracker.git](https://github.com/AVER7777/habit-tracker.git)
+cd habit-tracker
+npm run install:all
+
+```
+
+### Environment Variables
+
+Copy the example file and fill in your values:
+
+```bash
+cp .env.example .env
+
+```
+
+> **⚠️ Note:** Never commit the `.env` file. It is already excluded by `.gitignore`.
+
+### Run in Development
+
+```bash
+npm run dev
+
+```
+
+This starts both the backend and frontend in parallel:
+
+* **Frontend** → `http://localhost:5173`
+* **Backend** → `http://localhost:3000` (or the `PORT` value set in your `.env`)
+
+## 📜 Available Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start backend + frontend in parallel |
+| `npm run start:backend` | Start the backend server only |
+| `npm run start:frontend` | Start the Vite frontend only |
+| `npm run install:all` | Install root, backend, and frontend dependencies |
+| `npm run build` | Install frontend dependencies and generate production build |
+| `npm run lint` | Run ESLint across the entire project |
+
+## 🧹 Code Quality
+
+The project uses ESLint and Prettier to enforce a consistent code style.
+
+**Lint:**
+
+```bash
+npm run lint
+
+```
+
+**Format:**
+
+```bash
+npx prettier --write .
+
+```
+
+Prettier is configured with single quotes, semicolons, trailing commas, a 100-character line width, and 4-space indentation.
+
+## ⚖️ License
+
+This project is **not** open-source. The source code is published for portfolio and demonstration purposes only.
+
+You are not authorized to copy, modify, distribute, or use this code for personal or commercial purposes without explicit permission.
+
+All rights reserved © 2026 AVER7777.
