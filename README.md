@@ -6,9 +6,10 @@
 
 A full-stack habit tracking web app built with a Node.js / Express backend and a React / Vite frontend, organized as a monorepo.
 
-<!-- Replaces this path with your actual image file or GitHub link -->
 <p align="center">
-  <img src="https://cdn.discordapp.com/attachments/630507865173393408/1516440621038964836/image.png?ex=6a32a6e2&is=6a315562&hm=124c481ab24ebcdfb20f35e03ea4c6de636f0dfe7931119b779d673a9d859247&" alt="Habit Tracker Template" width="700">
+  <img src="https://i.imgur.com/0AaUyK8.png" alt="Habit Tracker Template" width="700">
+  <br>
+  App template
 </p>
 
 ## 🛠 Tech Stack
